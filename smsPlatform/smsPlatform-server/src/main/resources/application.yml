@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@192.168.91.153:1521:yfzx
+    username: prod_dxpt
+    password: prod_dxpt
+    maxActive: 5
+    maxIdle: 0
+    validationQuery: select 1
+    testWhileIdle: true
+    testOnBorrow: true
+    timeBetweenEvictionRunsMillis: 60000
+  profiles:
+    active: development
+# LOGGING
+#jdbc:oracle:thin:@192.168.91.153:1521:yfzx
+#jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.100.92)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.100.92)(PORT=1521))(LOAD_BALANCE=yes)(FAILOVER=ON)(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=racdb.nanchang.com)(FAILOVER_MODE=(TYPE=SESSION)(METHOD=BASIC))))
+logging:
+  #file: log.txt
+  level:
+    org.springframework.http: DEBUG
+    org.springframework.web.client: DEBUG
+    com.enjoyor: DEBUG
+
+InitConfig:
+  ID: 26
+  PWD: ar8vSP9p2aDheAohsn2xcN7DvDngJLl3i5n2rj3hwho8Zbeya8bexQ==
+  SERVICEID: 106573015735
+  HTTPURL: http://223.82.247.211:8080/sjb/HttpSendSMSService
+

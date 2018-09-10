@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enjoyor.soa.traffic.core.smsPlatform.mapper.KkInfoUMapper">
+  <resultMap id="BaseResultMap" type="com.enjoyor.soa.traffic.core.smsPlatform.pojo.KkInfoUPojo">
+    <result column="KKID" jdbcType="VARCHAR" property="kkid" />
+    <result column="OUT_SBBH" jdbcType="VARCHAR" property="outSbbh" />
+    <result column="OUT_FXBH" jdbcType="VARCHAR" property="outFxbh" />
+    <result column="ZONE_CODE" jdbcType="VARCHAR" property="zoneCode" />
+    <result column="KKMC" jdbcType="VARCHAR" property="kkmc" />
+    <result column="X" jdbcType="DECIMAL" property="x" />
+    <result column="Y" jdbcType="DECIMAL" property="y" />
+    <result column="CCLJ" jdbcType="VARCHAR" property="cclj" />
+    <result column="SJLY" jdbcType="VARCHAR" property="sjly" />
+    <result column="CCLJ1" jdbcType="VARCHAR" property="cclj1" />
+    <result column="SBLB" jdbcType="VARCHAR" property="sblb" />
+  </resultMap>
+  <select id="queryKkInfoU" parameterType="Map" resultMap="BaseResultMap">
+    SELECT OUT_SBBH,KKMC FROM(
+    SELECT z.OUT_SBBH , z.KKMC ,ROW_NUMBER() OVER(PARTITION BY z.OUT_SBBH ORDER BY z.KKMC) AS code_id
+    FROM v_kk_info_u z
+    )
+    <where>
+      and code_id =1
+      <if test="outSbbh != null and outSbbh != ''">
+        and OUT_SBBH = #{outSbbh}
+      </if>
+      <if test="kkmc != null and kkmc != ''">
+        and KKMC LIKE concat(concat('%',#{kkmc}),'%')
+      </if>
+    </where>
+  </select>
+
+</mapper>

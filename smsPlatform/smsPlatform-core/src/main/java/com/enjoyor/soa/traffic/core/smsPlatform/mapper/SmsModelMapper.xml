@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enjoyor.soa.traffic.core.smsPlatform.mapper.SmsModelMapper">
+  <resultMap id="BaseResultMap" type="com.enjoyor.soa.traffic.core.smsPlatform.pojo.SmsModelPojo">
+    <result column="MODEL_CODE" jdbcType="VARCHAR" property="modelCode" />
+    <result column="MODEL_NAME" jdbcType="VARCHAR" property="modelName" />
+    <result column="MODEL_CONTENT" jdbcType="VARCHAR" property="modelContent" />
+    <result column="WFXW_CODE" jdbcType="VARCHAR" property="wfxwCode" />
+    <result column="MODEL_TYPE" jdbcType="VARCHAR" property="modelType" />
+    <result column="MODEL_TIME" jdbcType="TIMESTAMP" property="modelTime" />
+    <result column="MODEL_XGR" jdbcType="VARCHAR" property="modelXgr" />
+    <result column="WFXW" jdbcType="VARCHAR" property="wfxw" />
+    <result column="DEPT_ID" jdbcType="VARCHAR" property="deptId" />
+    <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
+    <result column="PLATE_COUNT" jdbcType="DECIMAL" property="plateCount" />
+    <result column="ROAD_COUNT" jdbcType="DECIMAL" property="roadCount" />
+    <result column="DATE_COUNT" jdbcType="DECIMAL" property="dateCount" />
+    <result column="PLACE_COUNT" jdbcType="DECIMAL" property="placeCount" />
+  </resultMap>
+  <sql id="Base_Column_List" >MODEL_CODE, MODEL_NAME, MODEL_CONTENT,
+      WFXW_CODE, MODEL_TYPE, MODEL_TIME,
+      MODEL_XGR, WFXW, DEPT_ID,
+      DEPT_NAME, PLATE_COUNT, ROAD_COUNT,
+      DATE_COUNT, PLACE_COUNT
+  </sql>
+
+  <insert id="insertSmsModel" parameterType="com.enjoyor.soa.traffic.core.smsPlatform.pojo.SmsModelPojo">
+    insert into MSG_MODEL (MODEL_CODE, MODEL_NAME, MODEL_CONTENT,
+      WFXW_CODE, MODEL_TYPE, MODEL_TIME,
+      MODEL_XGR, WFXW, DEPT_ID,
+      DEPT_NAME, PLATE_COUNT, ROAD_COUNT,
+      DATE_COUNT, PLACE_COUNT)
+    values (#{modelCode,jdbcType=VARCHAR}, #{modelName,jdbcType=VARCHAR}, #{modelContent,jdbcType=VARCHAR},
+      #{wfxwCode,jdbcType=VARCHAR}, #{modelType,jdbcType=VARCHAR}, sysdate,
+      #{modelXgr,jdbcType=VARCHAR}, #{wfxw,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR},
+      #{deptName,jdbcType=VARCHAR}, #{plateCount,jdbcType=DECIMAL}, #{roadCount,jdbcType=DECIMAL},
+      #{dateCount,jdbcType=DECIMAL}, #{placeCount,jdbcType=DECIMAL})
+  </insert>
+
+  <select id="querySmsModel" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from MSG_MODEL
+    <where>
+      <if test="modelCode != null and modelCode != ''">
+        and MODEL_CODE = #{modelCode}
+      </if>
+      <if test="modelName != null and modelName != ''">
+        and MODEL_NAME = #{modelName}
+      </if>
+      <if test="modelType != null and modelType != ''">
+        and MODEL_TYPE = #{modelType}
+      </if>
+      <if test="modelXgr != null and modelXgr != ''">
+        and MODEL_XGR = #{modelXgr}
+      </if>
+    </where>
+  </select>
+  <delete id="delSmsModel" >
+    delete from MSG_MODEL
+    <choose>
+      <when test="modelId != null and modelId != ''">
+        where MODEL_CODE = #{modelIds}
+      </when>
+      <when test="modelIds != null and modelIds != ''">
+        where MODEL_CODE in (<foreach collection="modelIds" item="item" separator="," >#{item}</foreach>)
+      </when>
+      <otherwise>
+        where 1=0
+      </otherwise>
+    </choose>
+  </delete>
+  <update id="updateSmsModel" parameterType="com.enjoyor.soa.traffic.core.smsPlatform.pojo.SmsModelPojo">
+    update MSG_MODEL
+    <set>
+      <if test="modelName != null">
+          MODEL_NAME = #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="modelContent != null">
+          MODEL_CONTENT = #{modelContent,jdbcType=VARCHAR},
+      </if>
+        <if test="modelType != null">
+            MODEL_TYPE = #{modelType,jdbcType=VARCHAR},
+        </if>
+        <if test="modelXgr != null">
+            MODEL_XGR = #{modelXgr,jdbcType=VARCHAR},
+        </if>
+        <if test="deptId != null">
+            DEPT_ID = #{deptId,jdbcType=VARCHAR},
+        </if>
+      <if test="deptName != null">
+        DEPT_NAME = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null">
+        PLATE_COUNT = #{plateCount,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null">
+        ROAD_COUNT = #{roadCount,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null">
+        DATE_COUNT = #{dateCount,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null">
+        PLACE_COUNT = #{placeCount,jdbcType=VARCHAR},
+      </if>
+
+      MODEL_TIME = sysdate
+    </set>
+    where MODEL_CODE = #{modelCode}
+  </update>
+
+</mapper>

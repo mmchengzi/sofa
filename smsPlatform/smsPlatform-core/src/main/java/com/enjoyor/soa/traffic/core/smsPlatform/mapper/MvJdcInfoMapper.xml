@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enjoyor.soa.traffic.core.smsPlatform.mapper.MvJdcInfoMapper">
+  <resultMap id="BaseResultMap" type="com.enjoyor.soa.traffic.core.smsPlatform.pojo.MvJdcInfoPojo">
+    <result column="XH" jdbcType="CHAR" property="xh" />
+    <result column="HPZL" jdbcType="CHAR" property="hpzl" />
+    <result column="HPZL_NAME" jdbcType="OTHER" property="hpzlName" />
+    <result column="HPHM" jdbcType="VARCHAR" property="hphm" />
+    <result column="SYR" jdbcType="VARCHAR" property="syr" />
+    <result column="SYXZ" jdbcType="CHAR" property="syxz" />
+    <result column="SYXZ_NAME" jdbcType="VARCHAR" property="syxzName" />
+    <result column="FDJH" jdbcType="VARCHAR" property="fdjh" />
+    <result column="CLSBDH" jdbcType="VARCHAR" property="clsbdh" />
+    <result column="CLXH" jdbcType="VARCHAR" property="clxh" />
+    <result column="CSYS" jdbcType="VARCHAR" property="csys" />
+    <result column="CSYS_NAME" jdbcType="VARCHAR" property="csysName" />
+    <result column="CLPP" jdbcType="VARCHAR" property="clpp" />
+    <result column="JTFS" jdbcType="CHAR" property="jtfs" />
+    <result column="JTFS_NAME" jdbcType="VARCHAR" property="jtfsName" />
+    <result column="ZT" jdbcType="VARCHAR" property="zt" />
+    <result column="ZT_NAME" jdbcType="VARCHAR" property="ztName" />
+    <result column="YXQZ" jdbcType="TIMESTAMP" property="yxqz" />
+    <result column="FZJG" jdbcType="VARCHAR" property="fzjg" />
+    <result column="ZSXZQH" jdbcType="VARCHAR" property="zsxzqh" />
+    <result column="ZSXXDZ" jdbcType="CHAR" property="zsxxdz" />
+    <result column="LXDH" jdbcType="VARCHAR" property="lxdh" />
+    <result column="LXFS" jdbcType="VARCHAR" property="lxfs" />
+    <result column="GXRQ" jdbcType="TIMESTAMP" property="gxrq" />
+  </resultMap>
+  <sql id="Base_Column_List">XH, HPZL, HPZL_NAME, HPHM,
+      SYR, SYXZ, SYXZ_NAME, FDJH,
+      CLSBDH, CLXH, CSYS,
+      CSYS_NAME, CLPP, JTFS,
+      JTFS_NAME, ZT, ZT_NAME,
+      YXQZ, FZJG, ZSXZQH,
+      ZSXXDZ, LXDH, LXFS, GXRQ
+  </sql>
+  <select id="queryMvJdcInfo" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from V_MV_JDC_INFO
+    <where>
+      <if test="xh != null and xh != ''">
+        and XH = #{xh}
+      </if>
+      <if test="hpzl != null and hpzl != ''">
+        and HPZL = #{hpzl}
+      </if>
+      <if test="hphm != null and hphm != ''">
+        and HPHM = #{hphm}
+      </if>
+      <if test="fzjg != null and fzjg != ''">
+        and FZJG = #{fzjg}
+      </if>
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enjoyor.soa.traffic.core.smsPlatform.mapper.SmsLogMapper">
+    <resultMap id="BaseResultMap" type="com.enjoyor.soa.traffic.core.smsPlatform.pojo.SmsLogPojo">
+        <result column="MSG_LOGID" jdbcType="VARCHAR" property="msgLogid"/>
+        <result column="HPHM" jdbcType="VARCHAR" property="hphm"/>
+        <result column="CLLX" jdbcType="VARCHAR" property="cllx"/>
+        <result column="WFXW_CODE" jdbcType="VARCHAR" property="wfxwCode"/>
+        <result column="WFXW" jdbcType="VARCHAR" property="wfxw"/>
+        <result column="WF_TIME" jdbcType="TIMESTAMP" property="wfTime"/>
+        <result column="MSG_STATUS" jdbcType="DECIMAL" property="msgStatus"/>
+        <result column="MSG_TIME" jdbcType="TIMESTAMP" property="msgTime"/>
+        <result column="MSG_SJHM" jdbcType="VARCHAR" property="msgSjhm"/>
+        <result column="MSG_PERSON" jdbcType="VARCHAR" property="msgPerson"/>
+        <result column="ADDR" jdbcType="VARCHAR" property="addr"/>
+        <result column="MSG_CONTENT" jdbcType="VARCHAR" property="msgContent"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+        <result column="MSG_TYPE" jdbcType="DECIMAL" property="msgType"/>
+        <result column="MSG_SENDER" jdbcType="VARCHAR" property="msgSender"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    MSG_LOGID, HPHM, CLLX,
+      WFXW_CODE, WFXW, WF_TIME,
+      MSG_STATUS, MSG_TIME, MSG_SJHM,
+      MSG_PERSON, ADDR, MSG_CONTENT,
+      MEMO, MSG_TYPE, MSG_SENDER
+  </sql>
+    <insert id="insertSmsLog" parameterType="com.enjoyor.soa.traffic.core.smsPlatform.pojo.SmsLogPojo">
+    insert into MSG_LOG (MSG_LOGID, HPHM, CLLX,
+      WFXW_CODE, WFXW, WF_TIME,
+      MSG_STATUS, MSG_TIME, MSG_SJHM,
+      MSG_PERSON, ADDR, MSG_CONTENT,
+      MEMO, MSG_TYPE, MSG_SENDER
+      )
+    values (#{msgLogid,jdbcType=VARCHAR}, #{hphm,jdbcType=VARCHAR}, #{cllx,jdbcType=VARCHAR},
+      #{wfxwCode,jdbcType=VARCHAR}, #{wfxw,jdbcType=VARCHAR}, sysdate,
+      #{msgStatus,jdbcType=DECIMAL}, sysdate, #{msgSjhm,jdbcType=VARCHAR},
+      #{msgPerson,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, #{msgContent,jdbcType=VARCHAR},
+      #{memo,jdbcType=VARCHAR}, #{msgType,jdbcType=DECIMAL}, #{msgSender,jdbcType=VARCHAR}
+      )
+  </insert>
+
+    <select id="querySmsLog" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from MSG_LOG
+        <where>
+            <if test="msgLogid != null and msgLogid != ''">
+                and MSG_LOGID = #{msgLogid}
+            </if>
+            <if test="hphm != null and hphm != ''">
+                and HPHM = #{hphm}
+            </if>
+            <if test="cllx != null and cllx != ''">
+                and CLLX = #{cllx}
+            </if>
+            <if test="msgStatus != null and msgStatus != ''">
+                and MSG_STATUS = #{msgStatus}
+            </if>
+            <if test="msgSender != null and msgSender != ''">
+                and MSG_SENDER = #{msgSender}
+            </if>
+            <if test="msgPerson != null and msgPerson != ''">
+                and MSG_PERSON &gt;= #{msgPerson}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and MSG_TIME &lt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and MSG_TIME &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+    <delete id="delSmsLog" parameterType="Map">
+        delete from MSG_LOG
+        <choose>
+            <when test="msgLogid != null and msgLogid != ''">
+                where MSG_LOGID = #{msgLogid}
+            </when>
+            <when test="msgLogIds != null and msgLogIds != ''">
+                where MSG_LOGID in (<foreach collection="msgLogIds" item="item" separator=",">#{item}</foreach>)
+            </when>
+            <otherwise>
+                where 1=0
+            </otherwise>
+        </choose>
+    </delete>
+
+    <update id="updateSmsLog" parameterType="com.enjoyor.soa.traffic.core.smsPlatform.pojo.SmsLogPojo">
+        update MSG_LOG
+        <set>
+            <if test="hphm != null">
+                HPHM = #{hphm,jdbcType=TIMESTAMP},
+            </if>
+            <if test="msgContent != null">
+                MSG_CONTENT = #{msgContent,jdbcType=VARCHAR},
+            </if>
+            MSG_TIME = sysdate
+        </set>
+        where MSG_LOGID = #{msgLogid,jdbcType=TIMESTAMP}
+    </update>
+
+</mapper>
